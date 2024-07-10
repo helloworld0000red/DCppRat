@@ -16,7 +16,7 @@ Discord Rat similar to pysilon and moom825 discord rat 2.0 but in c++
 12. download
 13. text to speech
 14. messagebox open
-15. suspend process coz like why tf not
+15. Make it not require dlls and download them when runs
 
 # maybe in future
   grab info
