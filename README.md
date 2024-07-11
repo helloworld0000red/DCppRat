@@ -1,6 +1,23 @@
 # DCppRat
 Discord Rat similar to pysilon and moom825 discord rat 2.0 but in c++
 
+# Features
+
+1. Startup with task schedular (requires to run as admin if option is enabled runs as admin by default)
+2. Mutex Closes if already running on the system
+3. screenshot
+4. reverse shell with cmd
+5. shutdown
+6. restart
+7. forkbomb + rickroll cmd
+8. kill itself
+9. request admin
+10. bsod with usermode
+11. enable / disable task manger
+12. enable / disable reset
+13. pause any process makeing it unresponsive
+14. Idk man
+
 # todo
 1. crit/uncrit process
 2. get ip
@@ -17,7 +34,14 @@ Discord Rat similar to pysilon and moom825 discord rat 2.0 but in c++
 13. text to speech
 14. messagebox open
 15. Make it not require dlls and download them when runs
+16. Crypto clipper (will add when i feel motivated to do so)
 
 # maybe in future
   grab info
   
+pls donate so i can keep working on this  as money == motivation
+btc: bc1qq520nmjylvzcu2cwy3srfyf0me96ne5gvcl98d
+monero: 42LH7PpivEvh7sxTWdHqiHWppsC3sQNkA8bsbCxM8RuUC3RrFpYABaWaPs73WMWuccLiVhgLuizKh4h25LHaYpZNTLVzC1i
+ltc: LdcnfkAUBSLAdogTQHVHSo92gKGRghqau9
+eth: 0xABB32742269571aE7cbDC87212f8938477f734b4
+
