@@ -36,6 +36,10 @@ Discord Rat similar to pysilon and moom825 discord rat 2.0 but in c++
 15. Make it not require dlls and download them when runs
 16. Crypto clipper (will add when i feel motivated to do so)
 
+# Credits / insparation
+https://github.com/moom825/Discord-RAT-2.0
+https://github.com/mategol/PySilon-malware
+
 # maybe in future
   grab info
   
