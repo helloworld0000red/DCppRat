@@ -37,8 +37,9 @@ Discord Rat similar to pysilon and moom825 discord rat 2.0 but in c++
 16. Crypto clipper (will add when i feel motivated to do so)
 
 # Credits / insparation
-https://github.com/moom825/Discord-RAT-2.0
-https://github.com/mategol/PySilon-malware
+1. https://github.com/moom825/Discord-RAT-2.0
+2. https://github.com/mategol/PySilon-malware
+3. https://github.com/UnamSanctam/UnamBinder
 
 # maybe in future
   grab info
@@ -49,3 +50,4 @@ pls donate so i can keep working on this  as money == motivation
 3. ltc: LdcnfkAUBSLAdogTQHVHSo92gKGRghqau9
 4. eth: 0xABB32742269571aE7cbDC87212f8938477f734b4
 
+Tutorial: https://www.youtube.com/watch?v=MkUCp1ZKC9k
