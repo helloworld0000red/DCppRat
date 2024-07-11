@@ -40,8 +40,8 @@ Discord Rat similar to pysilon and moom825 discord rat 2.0 but in c++
   grab info
   
 pls donate so i can keep working on this  as money == motivation
-btc: bc1qq520nmjylvzcu2cwy3srfyf0me96ne5gvcl98d
-monero: 42LH7PpivEvh7sxTWdHqiHWppsC3sQNkA8bsbCxM8RuUC3RrFpYABaWaPs73WMWuccLiVhgLuizKh4h25LHaYpZNTLVzC1i
-ltc: LdcnfkAUBSLAdogTQHVHSo92gKGRghqau9
-eth: 0xABB32742269571aE7cbDC87212f8938477f734b4
+1. btc: bc1qq520nmjylvzcu2cwy3srfyf0me96ne5gvcl98d
+2. monero: 42LH7PpivEvh7sxTWdHqiHWppsC3sQNkA8bsbCxM8RuUC3RrFpYABaWaPs73WMWuccLiVhgLuizKh4h25LHaYpZNTLVzC1i
+3. ltc: LdcnfkAUBSLAdogTQHVHSo92gKGRghqau9
+4. eth: 0xABB32742269571aE7cbDC87212f8938477f734b4
 
