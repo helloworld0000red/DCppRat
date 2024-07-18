@@ -491,7 +491,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
             bot.message_create(dpp::message()
                 .set_channel_id(Channelid_CreateChannel)
-                .set_content("Session started Admin : " + std::to_string(isAdmin)));
+                .set_content("Session started Version: 1.0.2 Admin : " + std::to_string(isAdmin)));
         }
         });
 
