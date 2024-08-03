@@ -1,7 +1,7 @@
 # DCppRat
 Discord Rat similar to pysilon and moom825 discord rat 2.0 but in c++
 
-Version: 1.0.2
+Version: 1.0.3
 
 # Features
 
