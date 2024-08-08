@@ -1,6 +1,8 @@
 # DCppRat
 Discord Rat similar to pysilon and moom825 discord rat 2.0 but in c++
 
+ This is outdated i have a update ready but im rewrtiing the thing to have a middle server and not communicate directly to discord so dont expect an update for a while also this code is shit dont use it, i wrote it when i had covid and was really tired and sick please wait for an update AND DO NOT USE THIS SHIT CODE
+
 Version: 1.0.3
 
 # Features
