@@ -41,6 +41,17 @@ Version: 1.0.3
 14. Make it not require dlls and download them when runs
 15. Crypto clipper (will add when i feel motivated to do so)
 
+# Coded waiting on next release
+1. Disable Defender
+2. AntiVm + Antidebug
+3. Disable malwarebytes
+4. Unhook system dll's (Because not using indirect syscalls not on that level yet)
+5. False activity if vm is detected
+
+# SOON 
+1. Builder
+2. smaller stub
+
 # Credits / insparation
 1. https://github.com/moom825/Discord-RAT-2.0
 2. https://github.com/mategol/PySilon-malware
